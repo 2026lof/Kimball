@@ -1,9 +1,13 @@
+  GNU nano 7.2                                                                      netlify.toml                                                                                
 [build]
 publish = "theme"
 command = "npm run build"
+functions = "netlify/functions"
 
 [[headers]]
-for = "/*" # This defines which paths this specific [[headers]] block will cover.
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
 
 [headers.values]
 X-Frame-Options = "DENY"
