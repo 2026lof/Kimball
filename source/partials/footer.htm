@@ -28,6 +28,54 @@
 
 <!-- script js -->
 <script src="js/script.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const form = document.getElementById("apptForm");
+  const statusEl = document.getElementById("apptStatus");
+
+  if (!form) return;
+
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    statusEl.textContent = "Sending...";
+
+    const fd = new FormData(form);
+
+    const payload = {
+      name: fd.get("Name") || "",
+      email: fd.get("Email") || "",
+      phone: fd.get("Phone") || "",
+      availability: fd.get("Date") || "",
+      type: fd.getAll("subject").join(" / "),
+      notes: fd.get("form_message") || "",
+      company: fd.get("company") || ""
+    };
+
+    try {
+      const res = await fetch("/.netlify/functions/appointment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error("Request failed");
+
+      statusEl.textContent = "Appointment request sent!";
+      form.reset();
+
+    } catch (err) {
+      console.error(err);
+      statusEl.textContent = "Something went wrong. Please call the office.";
+    }
+
+  });
+
+});
+</script>
 </body>
 
 </html>
