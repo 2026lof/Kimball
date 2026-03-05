@@ -1,15 +1,9 @@
 [build]
- publish = "theme"
- command = "npm run build"
- functions = "netlify/functions"
+  publish = "theme"
+  command = "npm run build"
+  functions = "netlify/functions"
 
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
-
-[headers.values]
-X-Frame-Options = "DENY"
-X-XSS-Protection = "1; mode=block"
-Referrer-Policy = "same-origin"
-Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
