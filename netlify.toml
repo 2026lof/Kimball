@@ -1,8 +1,7 @@
-  GNU nano 7.2                                                                      netlify.toml                                                                                
 [build]
-publish = "theme"
-command = "npm run build"
-functions = "netlify/functions"
+ publish = "theme"
+ command = "npm run build"
+ functions = "netlify/functions"
 
 [[headers]]
   from = "/api/*"
