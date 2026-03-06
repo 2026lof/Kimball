@@ -1,24 +1,26 @@
-exports.handler = async (event) => {
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      body: "Method Not Allowed",
-    };
-  }
+const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    personalizations: [{ to: [{ email: process.env.APPT_TO_EMAIL }] }],
+    from: { email: process.env.APPT_FROM_EMAIL },
+    subject: "New Appointment Request",
+    content: [{ type: "text/plain", value: message }],
+  }),
+});
 
-  let data = {};
-  try {
-    data = JSON.parse(event.body || "{}");
-  } catch {
-    return {
-      statusCode: 400,
-      body: "Invalid JSON",
-    };
-  }
-
+if (!res.ok) {
+  const text = await res.text();
   return {
-    statusCode: 200,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ok: true, received: data }),
+    statusCode: res.status,
+    body: text || "Email failed",
   };
+}
+
+return {
+  statusCode: 200,
+  body: JSON.stringify({ status: "ok" }),
 };
