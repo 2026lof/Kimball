@@ -1,7 +1,9 @@
 [build]
   publish = "theme"
   command = "npm run build"
-  functions = "netlify/functions"
+
+[functions]
+  directory = "netlify/functions"
 
 [[redirects]]
   from = "/api/*"
